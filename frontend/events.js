@@ -14,6 +14,18 @@ async function loadEventsFromDatabase() {
     }
 }
 
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, m => map[m]);
+}
+
 // イベントを表示
 function displayEvents(events) {
     const eventsGrid = document.getElementById('eventsGrid');
@@ -61,7 +73,7 @@ function displayEvents(events) {
                 <div class="event-day">${day}</div>
             </div>
             <div class="event-info">
-                <h3>${event.event_name}</h3>
+                <h3>${escapeHtml(event.event_name)}</h3>
                 <div class="event-meta">
                     <span class="event-location">📍 ${event.location}</span>
                     <span class="event-area">${areaDisplay}</span>
