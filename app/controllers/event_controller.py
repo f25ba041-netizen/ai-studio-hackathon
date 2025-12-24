@@ -12,22 +12,24 @@ def get_events():
     """イベント一覧を取得（フィルター対応）"""
     # エラーハンドリングが不十分（例外が発生するとスタックトレースが露出）
     # 本来はtry-exceptでエラーをキャッチして適切なエラーレスポンスを返すべき
-    # try:
+    try:
     # クエリパラメータを取得
-    month = request.args.get('month')
-    area = request.args.get('area')
+        month = request.args.get('month')
+        area = request.args.get('area')
+        
+        
 
-    # フィルター適用
-    if month:
-        events = event_service.get_events_by_month(month)
-    elif area:
-        events = event_service.get_events_by_area(area)
-    else:
-        events = event_service.get_all_events()
+        # フィルター適用
+        if month:
+            events = event_service.get_events_by_month(month)
+        elif area:
+            events = event_service.get_events_by_area(area)
+        else:
+            events = event_service.get_all_events()
 
-    return jsonify(events)
-    # except Exception as e:
-    #     return jsonify({'error': str(e)}), 500
+        return jsonify(events)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @event_bp.route('/events/search', methods=['GET'])
 def search_events():
