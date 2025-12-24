@@ -28,6 +28,9 @@ class EventRepository:
         conn = get_db()
         if not conn:
             return []
+        
+        if not (1 <= int(month) <= 12):
+            raise ValueError('月は1〜12の範囲で指定してください')
 
         try:
             cursor = conn.cursor()
