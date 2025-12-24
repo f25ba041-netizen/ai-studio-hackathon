@@ -21,6 +21,7 @@ class ReviewRepository:
             cursor.execute('''
                 SELECT *
                 FROM reviews
+                LEFT JOIN users u ON r.user_id = u.user_id
                 WHERE spot_id = ?
                 ORDER BY created_at DESC
             ''', (spot_id,))
