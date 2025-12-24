@@ -43,8 +43,8 @@ class StatsRepository:
             # さらにバグ: SQLインジェクション脆弱性 - area_filterを直接埋め込んでいる
             if area_filter:
                 # バグ: f-stringで直接埋め込み（SQLインジェクション）
-                query = f"SELECT spot_id FROM tourist_spots WHERE address LIKE '%{area_filter}%'"
-                cursor.execute(query)
+                query = f"SELECT spot_id FROM tourist_spots WHERE address LIKE '% || ? || %'"
+                cursor.execute(query,(area_filter))
             else:
                 cursor.execute('SELECT spot_id FROM tourist_spots')
             spot_ids = [row['spot_id'] for row in cursor.fetchall()]
