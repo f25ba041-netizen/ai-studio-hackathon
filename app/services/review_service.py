@@ -109,6 +109,7 @@ class ReviewService:
                 self.review_repo.update_photo_filename(review_id, photo_filename)
             except Exception as e:
                 print(f"画像保存エラー: {e}")
+                self.review_repo.delete(review_id)
                 # トランザクション処理不備
                 # 画像保存失敗時にレビューをロールバックしていない
                 # 本来はトランザクションを使って、画像保存失敗時はレビューも削除すべき
