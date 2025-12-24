@@ -111,6 +111,18 @@ async function loadSpotDetails() {
     }
 }
 
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, m => map[m]);
+}
+
 // レビューをAPIから取得して表示
 async function loadReviews() {
     if (!currentSpotId) return;
@@ -157,11 +169,11 @@ async function loadReviews() {
             const reviewHtml = `
                 <div class="review-item" data-review-id="${review.review_id}">
                     <div class="review-header">
-                        <span class="reviewer-name">${review.user_name}</span>
+                        <span class="reviewer-name">${escapeHtml(review.user_name)}</span>
                         <span class="review-date">${dateStr}</span>
                     </div>
                     <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
-                    <div class="review-text">${review.review_content}</div>
+                    <div class="review-text">${escapeHtml(review.review_content)}</div>
                     ${photoHtml}
                     ${deleteButtonHtml}
                 </div>
