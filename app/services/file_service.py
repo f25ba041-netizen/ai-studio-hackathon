@@ -3,6 +3,7 @@
 """
 import os
 from config import Config
+import imghdr
 
 class FileService:
     """ファイルアップロードに関するビジネスロジック"""
@@ -16,6 +17,14 @@ class FileService:
         # ファイル名の拡張子だけチェックしている（.phpを.jpgにリネームすれば通過する）
         # 本来はMIMEタイプやマジックナンバー（ファイルの先頭バイト）で実際のファイル種別を確認すべき
         # ファイル形式チェック
+        try:
+            file_data = file.read()
+            file_type = imghdr.what(None, file_data)
+            if file_type not in ['jpeg', 'png', 'gif']:
+                return 'jpg, jpeg, png, gifのみ対応しています'
+        except:
+            return 'jpg, jpeg, png, gifのみ対応しています'
+        
         file_ext = os.path.splitext(file.filename)[1].lower()
         if file_ext not in Config.ALLOWED_EXTENSIONS:
             return 'jpg, jpeg, png, gifのみ対応しています'
